@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "tauri": "tauri"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.0",
@@ -19,22 +20,11 @@
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
-    "electron": "^33.2.0",
-    "electron-builder": "^25.1.8",
+    "@tauri-apps/api": "^2.1.1",
+    "@tauri-apps/cli": "^2.1.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.13",
     "postcss": "^8",
     "tailwindcss": "^3.4.1"
-  },
-  "main": "main.js",
-  "build": {
-    "appId": "com.example.myapp",
-    "files": [
-      "out",
-      "main.js"
-    ],
-    "mac": {
-      "category": "public.app-category.utilities"
-    }
   }
 }

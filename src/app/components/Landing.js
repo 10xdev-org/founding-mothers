@@ -16,33 +16,38 @@ const Landing = ({
   return (
     <div className="relative overflow-y-auto h-[calc(100vh)]">
       {/* Adjust height to allow scrolling */}
+
+      {/* Pass isFocused to Hero */}
+      {!isFocused && (
+        <div
+          className={`transition-opacity duration-500 ${
+            isFocused ? "opacity-0" : "opacity-100"
+          }`}
+        >
+          <WelcomeBanner />
+          <button
+            onClick={handleLandingWatchFull}
+            className="ml-10 px-4 py-2 bg-blue-600 text-white font-medium rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
+          >
+            Watch Full Video
+          </button>
+
+          <VideoCardPanel
+            isFocused={isFocused}
+            handleVideoClick={handleVideoClick}
+          />
+        </div>
+      )}
       <Hero
         isFocused={isFocused}
         videoSrc={"./videos/Women%20Animation%20Full%20Video.mp4"}
+        backgroundSrc={"./videos/screensaver.mp4"}
         overlayOpts={{
           leftSize: { height: 60, width: 100 }, // Customize left triangle size
           rightSize: { height: 30, width: 200 },
         }}
+        handleBackAction={handleBackAction}
       />
-      {/* Pass isFocused to Hero */}
-      <div
-        className={`transition-opacity duration-500 ${
-          isFocused ? "opacity-0" : "opacity-100"
-        }`}
-      >
-        <WelcomeBanner />
-        <button
-          onClick={handleLandingWatchFull}
-          className="ml-10 px-4 py-2 bg-blue-600 text-white font-medium rounded-lg shadow hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-300"
-        >
-          Watch Full Video
-        </button>
-
-        <VideoCardPanel
-          isFocused={isFocused}
-          handleVideoClick={handleVideoClick}
-        />
-      </div>
       {isFocused && (
         <button
           onClick={handleBackAction}

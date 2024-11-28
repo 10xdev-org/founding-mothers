@@ -1,25 +1,16 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useRef } from "react";
 import Overlay from "./Overlay";
 
-const Hero = ({ videoSrc, isFocused, overlayOpts = {} }) => {
-  const [overlayOpacity, setOverlayOpacity] = useState(0); // Start with 0 opacity
+const Hero = ({
+  videoSrc,
+  backgroundSrc,
+  isFocused,
+  handleBackAction,
+  overlayOpts = {},
+}) => {
   const videoRef = useRef(null); // Define the ref for the video element
-
-  const handleScroll = () => {
-    const scrollY = window.scrollY; // Get the current scroll position
-    const newOpacity = Math.min(scrollY / window.innerHeight, 1); // Calculate new opacity
-    setOverlayOpacity(newOpacity); // Update overlay opacity
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll); // Listen for scroll events
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll); // Clean up event listener
-    };
-  }, []);
 
   useEffect(() => {
     if (isFocused && videoRef.current) {
@@ -30,31 +21,25 @@ const Hero = ({ videoSrc, isFocused, overlayOpts = {} }) => {
 
   return (
     <section className="hero-section fixed inset-0 h-screen overflow-hidden">
-      {!isFocused && (
-        <video
-          ref={videoRef} // Assign the ref to the video element
-          className="w-full h-full object-cover"
-          src={videoSrc}
-          autoPlay
-          loop
-          muted
-          playsInline
-        />
-      )}
-      {isFocused && (
-        <video
-          ref={videoRef} // Assign the ref to the video element
-          className="w-full h-full object-contain"
-          src={videoSrc}
-          autoPlay
-          playsInline
-        />
-      )}
+      <video
+        ref={videoRef} // Assign the ref to the video element
+        className={`w-full h-full ${
+          isFocused ? "object-contain bg-black" : "object-cover"
+        }`}
+        src={isFocused ? videoSrc : backgroundSrc} // Use videoSrc or backgroundSrc based on isFocused
+        autoPlay
+        loop={!isFocused} // Loop only if not focused
+        muted={!isFocused} // Mute only if not focused
+        playsInline
+        controls={isFocused} // Show controls only when focused
+        controlsList={isFocused ? "nodownload noremoteplayback" : undefined} // Apply controlsList only when focused
+        onEnded={isFocused ? handleBackAction : undefined} // Trigger handleBackAction only when focused
+      />
       <Overlay
         animateIn={!isFocused} // Set animateIn to false if isFocused is true
         animateOut={isFocused} // Set animateOut to true if isFocused is true
         animationDuration={1}
-        mainOpacity={overlayOpacity + 0.2} // Set the overlay opacity based on scroll
+        mainOpacity={0.2} // Use a fixed opacity for the overlay
         {...overlayOpts}
       />
     </section>
